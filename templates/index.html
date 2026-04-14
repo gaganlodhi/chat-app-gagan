@@ -1,6 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat App</title>
+</head>
+
+<body>
+
+<h2>Chat App</h2>
+
+<div id="box" style="border:1px solid black; height:300px; overflow:auto;"></div>
+
+<input id="msg" type="text" placeholder="Type message">
+<button onclick="sendMessage()">Send</button>
+
+<!-- Socket.IO CDN (IMPORTANT) -->
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<script>
 var socket = io();
 
+// receive message
+socket.on("message", function(msg){
+    let box = document.getElementById("box");
+    box.innerHTML += "<p>" + msg + "</p>";
+});
+
+// send message
 function sendMessage(){
     let msg = document.getElementById("msg").value;
     socket.send(msg);
+    document.getElementById("msg").value = "";
 }
+</script>
+
+</body>
+</html>
