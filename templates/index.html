@@ -1,33 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Real Chat</title>
-</head>
-<body>
-
-<h2>Real Time Chat</h2>
-
-<div id="chat-box"></div>
-
-<input type="text" id="message" placeholder="Type message...">
-<button onclick="sendMessage()">Send</button>
-
-<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-
-<script>
 var socket = io();
 
-function sendMessage() {
-    let msg = document.getElementById("message").value;
+function sendMessage(){
+    let msg = document.getElementById("msg").value;
     socket.send(msg);
-    document.getElementById("message").value = "";
 }
-
-socket.on("message", function(msg) {
-    let chatBox = document.getElementById("chat-box");
-    chatBox.innerHTML += "<p>" + msg + "</p>";
-});
-</script>
-
-</body>
-</html>
