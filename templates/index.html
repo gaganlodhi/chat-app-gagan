@@ -1,50 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Chat App</title>
-</head>
-
-<body>
-
-<h2>Chat App</h2>
-
-<div id="box" style="border:1px solid black; height:300px; overflow:auto;"></div>
-
-<input id="msg" type="text" placeholder="Type message">
-<button onclick="sendMessage()">Send</button>
-
-<!-- Socket.IO CDN (IMPORTANT) -->
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-
 <script>
 var socket = io();
 
-// receive message
-socket.on("message", function(msg){
-    let box = document.getElementById("box");
-    box.innerHTML += "<p>" + msg + "</p>";
-});
-
-<input id="username" placeholder="Enter your name">
-<input id="message" placeholder="Enter message">
-<button onclick="sendMessage()">Send</button>
-
-<ul id="messages"></ul>
-<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-
-    <script>
-var socket = io();
-var currentUser = "";
+// 👇 username ek baar hi lo
+var currentUser = prompt("Enter your name");
 
 function sendMessage() {
-    var username = document.getElementById("username").value;
     var message = document.getElementById("message").value;
 
-    currentUser = username;
-
     socket.send({
-        username: username,
+        username: currentUser,
         message: message
     });
 }
@@ -53,7 +17,11 @@ socket.on('message', function(data) {
     var li = document.createElement("li");
     li.classList.add("message");
 
-    if (data.username === currentUser) {
+    // 👇 debug ke liye (optional)
+    console.log("Me:", currentUser);
+    console.log("Msg from:", data.username);
+
+    if (data.username.trim() === currentUser.trim()) {
         li.classList.add("sent");
     } else {
         li.classList.add("received");
