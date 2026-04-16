@@ -5,37 +5,61 @@
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 
     <style>
-        body { font-family: Arial; background: #ece5dd; }
-        h2 { background:#075e54; color:white; padding:10px; margin:0; }
+        body {
+            font-family: Arial;
+            background: #ece5dd;
+            margin: 0;
+        }
+
+        h2 {
+            background: #075e54;
+            color: white;
+            margin: 0;
+            padding: 10px;
+        }
 
         #messages {
-            list-style:none;
-            height:400px;
-            overflow-y:scroll;
-            padding:10px;
+            list-style: none;
+            padding: 10px;
+            height: 400px;
+            overflow-y: auto;
         }
 
         .msg {
-            padding:8px;
-            margin:5px;
-            background:white;
-            border-radius:10px;
+            padding: 8px 12px;
+            margin: 5px;
+            border-radius: 10px;
+            max-width: 60%;
+            clear: both;
+            display: inline-block;
+        }
+
+        .me {
+            background: #dcf8c6;
+            float: right;
+            text-align: right;
+        }
+
+        .other {
+            background: white;
+            float: left;
         }
 
         #inputBox {
-            display:flex;
+            display: flex;
+            padding: 10px;
         }
 
         input {
-            flex:1;
-            padding:10px;
+            flex: 1;
+            padding: 10px;
         }
 
         button {
-            background:#075e54;
-            color:white;
-            border:none;
-            padding:10px;
+            background: #075e54;
+            color: white;
+            border: none;
+            padding: 10px;
         }
     </style>
 </head>
@@ -66,15 +90,29 @@ function joinChat(){
     username = document.getElementById("username").value;
     socket.emit("join", username);
 
-    document.getElementById("login").style.display="none";
-    document.getElementById("chat").style.display="block";
+    document.getElementById("login").style.display = "none";
+    document.getElementById("chat").style.display = "block";
 }
 
 socket.on("message", function(msg){
     let li = document.createElement("li");
     li.classList.add("msg");
+
+    let sender = msg.split(":")[0];
+
+    if(sender === username){
+        li.classList.add("me");
+    } else {
+        li.classList.add("other");
+    }
+
     li.innerText = msg;
+
     document.getElementById("messages").appendChild(li);
+
+    // auto scroll
+    document.getElementById("messages").scrollTop =
+        document.getElementById("messages").scrollHeight;
 });
 
 function sendMsg(){
